@@ -29,6 +29,11 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+      - name: Cancel stale Pages deployment (one-time recovery)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api --method POST repos/nomansahi/nomansahi.github.io/pages/deployments/7bca13f06b1779ceb5b2e97614f3eb35f7fa73ba/cancel
       - name: Publish website
         id: deployment
         uses: actions/deploy-pages@v5
