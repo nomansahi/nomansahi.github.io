@@ -34,6 +34,14 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh api --method POST repos/nomansahi/nomansahi.github.io/pages/deployments/7bca13f06b1779ceb5b2e97614f3eb35f7fa73ba/cancel
+          for attempt in {1..24}; do
+            state=$(gh api repos/nomansahi/nomansahi.github.io/pages/deployments/7bca13f06b1779ceb5b2e97614f3eb35f7fa73ba/status --jq '.status')
+            echo "Previous deployment status: $state"
+            case "$state" in
+              deployment_cancelled|cancelled|canceled|deployment_failed|failed|errored|succeed|success) break ;;
+            esac
+            sleep 5
+          done
       - name: Publish website
         id: deployment
         uses: actions/deploy-pages@v5
