@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir _site
           cp index.html noman-ali-cv.pdf supplyon-experience-letter.pdf _site/
+          cp -R quran _site/
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
